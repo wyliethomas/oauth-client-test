@@ -1,0 +1,5 @@
+development:
+  adapter: mysql
+  database: idr_oauth_development
+  username: root
+  password: 1asdf2
