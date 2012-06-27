@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
   
-  attr_accessible :type, :firstName, :lastName, :email, :username, :phone, :mobilePhone, :uniqueId, :phoneSecondary
+  attr_accessible :type, :firstName, :lastName, :email, :username, :phone, :mobilePhone, :uniqueId, :phoneSecondary, :kind
 
-  scope :check,    lambda{|unique| where("uniqueId = ?", unique)}
 
   def self.consumer_key
     return {

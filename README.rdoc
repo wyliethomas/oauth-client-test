@@ -1,0 +1,1 @@
+TODO: The sessions controller is a bit beefy on the callback but the idea is there and working. Might could break it up and move some of it to the user model

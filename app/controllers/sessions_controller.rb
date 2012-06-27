@@ -27,10 +27,12 @@ class SessionsController < ApplicationController
     user = access_token.post "http://idr-wylie.office.infosiftr.com/oauth/get_user"
     result = JSON.parse(user.response.body)
     puts result['user']['uniqueId']
+
     #make the parms for update or create
     parms = {}
     result['user'].each do|key,val|
       if key != "id"
+        #type is a reserved name so I need to catch it and change it to kind
         if key == "type"
           parms['kind'] = val
         else
@@ -38,23 +40,27 @@ class SessionsController < ApplicationController
         end
       end
     end
+
     #create or update the user
-    usercheck = User.check(result['user']['uniqueId'])
-    if !usercheck.empty?
-      puts "USERCHECK"
-      puts usercheck
+    usercheck = User.find_by_uniqueId(result['user']['uniqueId'])
+    if !usercheck.blank?
       #update the existing user
+      usercheck.update_attributes(parms)
+      #need to make the user obj for auth
+      user = usercheck
     else
       puts "NO ONE HERE BY THAT NAME"
       #create the new user
       user = User.new(parms)
       user.save
     end
+
     #establish current_user helper
     #send the authenticated user on to the app
-    puts "USER"
-    puts user
-    render :text => "MADE IT BACK"
+    #render :text => "MADE IT BACK"
+    session[:user_id] = user.id
+    session[:expiry_time] = Time.now
+    redirect_to profile_index_path
   end
 
 

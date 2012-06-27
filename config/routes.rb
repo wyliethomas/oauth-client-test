@@ -1,8 +1,10 @@
 IdrOauth::Application.routes.draw do
 
 
+
   match 'sessions/callback' => 'sessions#callback', :as => :auth_callback
   resources :sessions
+  resources :profile
 
 
   # The priority is based upon order of creation:
